@@ -62,28 +62,28 @@
             android:text="Sports" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/businessTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="business" />
-
-        <com.google.android.material.tabs.TabItem
             android:id="@+id/entertainmentTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="entertainment" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/healthTab"
+            android:id="@+id/businessTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="health" />
+            android:text="business" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/scienceTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="science" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/healthTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="health" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/technologyTab"

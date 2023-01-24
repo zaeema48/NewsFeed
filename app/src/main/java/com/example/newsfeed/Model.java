@@ -1,6 +1,8 @@
 package com.example.newsfeed;
 
 public class Model {
+
+    //model class is data source
     private String author, title, description, url, urlToImage, publishedAt;
 
 

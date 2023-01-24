@@ -9,13 +9,19 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     TabItem tHome, tSports, tBusiness, tEntertainment, tHealth, tScience, tTech;
     Toolbar toolbar;
     PagerAdapter pageAdapter;
-
-    String api = "99eee101575345e88ca9d2fb132b9983" ;
+    static String country="in";
+    static String api = "99eee101575345e88ca9d2fb132b9983" ;
 
 
     @Override
@@ -63,5 +69,64 @@ public class MainActivity extends AppCompatActivity {
 
         //so that  view pager will also be changed
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
+
+    public static void findNews(RecyclerAdapter adapter, ArrayList<Model>modelClassArrayList) {
+        modelClassArrayList.clear();
+        ApiUtilities.getApiInterface().getNews(country, 100, api).enqueue(new Callback<MainNews>() {
+            @Override
+            public void onResponse(Call<MainNews> call, Response<MainNews> response) {
+                if(response.isSuccessful()){
+                    modelClassArrayList.addAll(response.body().getArticles());
+
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MainNews> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public static void findCategoryNews(String category, ArrayList<Model>modelClassArrayList, RecyclerAdapter adapter) {
+
+        ApiUtilities.getApiInterface().getCategoryNews(country, 100, category,  api).enqueue(new Callback<MainNews>() {
+            @Override
+            public void onResponse(Call<MainNews> call, Response<MainNews> response) {
+                if(response.isSuccessful()){
+                    modelClassArrayList.addAll(response.body().getArticles());
+
+                    adapter.notifyDataSetChanged(); //notify adapter to update the recycler view according to the new views
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MainNews> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    public static void searchNews(String keyword, RecyclerAdapter adapter, ArrayList<Model>modelClassArrayList){
+        modelClassArrayList.clear();
+        ApiUtilities.getApiInterface().searchNews(keyword, 100, api).enqueue(new Callback<MainNews>() {
+            @Override
+            public void onResponse(Call<MainNews> call, Response<MainNews> response) {
+                if(response.isSuccessful()){
+                    modelClassArrayList.addAll(response.body().getArticles());
+
+                    adapter.notifyDataSetChanged(); //notify adapter to update the recycler view according to the new views
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MainNews> call, Throwable t) {
+
+            }
+        });
+
     }
 }

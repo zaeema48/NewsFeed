@@ -1,5 +1,7 @@
 package com.example.newsfeed;
 
+import static com.example.newsfeed.MainActivity.findCategoryNews;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,10 +20,8 @@ import retrofit2.Response;
 
 public class ScienceFragment extends Fragment {
 
-    String api = "99eee101575345e88ca9d2fb132b9983" ;
     ArrayList<Model> modelClassArrayList;
     RecyclerAdapter adapter;
-    String country="in";
     private RecyclerView recyclerViewOfScience;
     private String category="science";
 
@@ -36,31 +36,10 @@ public class ScienceFragment extends Fragment {
         adapter=new RecyclerAdapter(getContext(), modelClassArrayList);
         recyclerViewOfScience.setAdapter(adapter);
 
-        findNews();
+        findCategoryNews(category, modelClassArrayList, adapter);
 
 
         return view;
     }
-
-    private void findNews() {
-        ApiUtilities.getApiInterface().getCategroyNews(country,category, 100, api).enqueue(new Callback<MainNews>() {
-            @Override
-            public void onResponse(Call<MainNews> call, Response<MainNews> response) {
-                if(response.isSuccessful()){
-                    modelClassArrayList.addAll(response.body().getArticles());
-
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MainNews> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-
 
 }

@@ -1,7 +1,11 @@
 package com.example.newsfeed;
 
+import static com.example.newsfeed.MainActivity.findNews;
+import static com.example.newsfeed.MainActivity.searchNews;
+
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,14 +20,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class HomeFragment extends Fragment {
 
-    String api = "99eee101575345e88ca9d2fb132b9983" ;
     ArrayList<Model> modelClassArrayList;
     RecyclerAdapter adapter;
-    String country="in";
     private RecyclerView recyclerViewOfHome;
+    SearchView searchView;
 
     
     @Override
@@ -33,32 +35,28 @@ public class HomeFragment extends Fragment {
 
         //fetching the ids of recyclerview, model, recycler adapter to set the adapter we have initialise in this class
         recyclerViewOfHome=view.findViewById(R.id.homeRV);
+        searchView=view.findViewById(R.id.searchbar);
         modelClassArrayList=new ArrayList<>();
         recyclerViewOfHome.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter=new RecyclerAdapter(getContext(), modelClassArrayList);
         recyclerViewOfHome.setAdapter(adapter);
 
-        findNews();
+        findNews(adapter, modelClassArrayList );
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchNews(query, adapter, modelClassArrayList);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         return view;
     }
 
-    private void findNews() {
-        ApiUtilities.getApiInterface().getNews(country, 100, api).enqueue(new Callback<MainNews>() {
-            @Override
-            public void onResponse(Call<MainNews> call, Response<MainNews> response) {
-                if(response.isSuccessful()){
-                    modelClassArrayList.addAll(response.body().getArticles());
-
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MainNews> call, Throwable t) {
-
-            }
-        });
-    }
 }

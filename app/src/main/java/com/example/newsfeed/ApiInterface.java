@@ -16,15 +16,24 @@ public interface ApiInterface {
     Call<MainNews> getNews(
             @Query("country") String country,
             @Query("pageSize") int pagesize,
-            @Query("apiKey")String apikey
+            @Query("apiKey")String apiKey
     );
 
     //top headlines for specific categories
     @GET("top-headlines")
-    Call<MainNews> getCategroyNews(
+    Call<MainNews> getCategoryNews(
             @Query("country") String country,
-            @Query("pageSize") String pagesize,
-            @Query("category") int category,
-            @Query("apiKey")String apikey
+            @Query("pageSize") int pagesize,
+            @Query("category") String category,
+            @Query("apiKey")String apiKey
     );
+
+    //For search bar
+    @GET("everything")
+    Call<MainNews> searchNews(
+            @Query("q") String q,
+            @Query("pageSize") int pagesize,
+            @Query("apiKey") String apiKey
+    );
+
 }
